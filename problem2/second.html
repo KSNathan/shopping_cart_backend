@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<style>
+	#canvas{
+	margin-left:300px;
+	margin-top:100px;
+	background-color:#fff0ff;
+	float:left;
+	}
+	div{
+	background-color:#fff0ff;
+	margin-top:100px;
+	float:left;
+	}
+	
+</style>
+<body background="background.jpg">
+
+<canvas id="canvas" width="400" height="400"></canvas>
+<div width = "400" height="400" >
+<input id = "time" list="time_zones">
+	<datalist id="time_zones">
+		<option id="1" value="Indian Standard Time"/>
+		<option id = "2"value="Coordinated Universal Time"/>
+		<option id=  "3"value = "Pacific Standard Time"/>
+	</datalist>
+</input>
+<button id="submit" onclick="onselect()">Select</button>
+</div>
+<script>
+var canvas = document.getElementById("canvas");
+var clock_contxt = canvas.getContext("2d");
+clock_contxt.globalAlpha = 1;
+var radius = canvas.height / 2;
+var ist = {'hour':0,'minute':0}
+var utc = {'hour':-5,'minute':-30};
+var pst = {'hour':-13,'minute':-30};
+var text1 = "Indian Standard Time";
+var text2 = "Coordinated Universal Time";
+var text3 = "Pacific Standard Time";
+var standard = ist;
+clock_contxt.translate(radius, radius);
+radius = radius * 0.90
+//drawClock();
+setInterval(drawClock,1000);
+
+function drawClock() {
+   
+	 var grad;
+    clock_contxt.beginPath();
+    clock_contxt.arc(0, 0, radius, 0, 2*Math.PI);
+    clock_contxt.fillStyle = 'white';
+    clock_contxt.fill();
+    
+    clock_contxt.lineWidth = radius*0.1;
+    clock_contxt.stroke();
+
+    clock_contxt.beginPath();
+    clock_contxt.arc(0, 0, radius*0.1, 0, 2*Math.PI);
+    clock_contxt.fillStyle = '#333';
+    clock_contxt.fill();
+	drawNumbers();
+	drawTime(clock_contxt,radius,standard);
+}
+function onselect(){
+	var current = document.getElementById("time").value;
+	if(current == text1){
+	standard = ist;
+	}else if(current.value == text2){
+	standard = utc;
+	}else if(current.value == text3){
+	standard = pst;
+	}
+	document.getElementById("time").value = "";
+}
+function drawNumbers(){
+ var ang;
+    var num;
+    clock_contxt.font = radius*0.15 + "px arial";
+    clock_contxt.textBaseline="middle";
+    clock_contxt.textAlign="center";
+    for(num= 1; num < 13; num++){
+        ang = num * Math.PI / 6;
+        clock_contxt.rotate(ang);
+        clock_contxt.translate(0, -radius*0.85);
+        clock_contxt.rotate(-ang);
+        clock_contxt.fillText(num.toString(), 0, 0);
+        clock_contxt.rotate(ang);
+        clock_contxt.translate(0, radius*0.85);
+        clock_contxt.rotate(-ang);
+    }
+}
+function drawTime(clock_contxt, radius,standard){
+
+    var now = new Date();
+    var hour = now.getHours() + standard.hour;
+    var minute = now.getMinutes() + standard.minute;
+    var second = now.getSeconds();
+    hour=hour%12;
+    hour=(hour*Math.PI/6)+(minute*Math.PI/(6*60))+(second*Math.PI/(360*60));
+    drawHand(clock_contxt, hour, radius*0.5, radius*0.07);
+    minute=(minute*Math.PI/30)+(second*Math.PI/(30*60));
+    drawHand(clock_contxt, minute, radius*0.8, radius*0.07);
+    second=(second*Math.PI/30);
+    drawHand(clock_contxt, second, radius*0.9, radius*0.02);
+}
+
+function drawHand(clock_contxt, pos, length, width) {
+    clock_contxt.beginPath();
+    clock_contxt.lineWidth = width;
+    clock_contxt.lineCap = "round";
+    clock_contxt.moveTo(0,0);
+    clock_contxt.rotate(pos);
+    clock_contxt.lineTo(0, -length);
+    clock_contxt.stroke();
+    clock_contxt.rotate(-pos);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#iframe_a {
+    min-width: 1124px;
+    min-height: 560px;
+}
+</style>
+<link rel="stylesheet" href="../css/bootstrap.min.css"/>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/angular.min.js"></script>
+<script type="text/javascript" src="../js/ang_app.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <a class="navbar-brand" href="#">Online Store</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/home.html" target="iframe_a">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+			
+          <a href="#" data-toggle="modal" data-target="#register" ><span class="glyphicon glyphicon-user"></span>Register</a>
+          <div id="register" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3>Register</h3>
+                </div>
+                <div class="modal-body" ng-app="registration_validationApp" ng-controller="reg_val_ctrl">
+                  <form name="form_register" role="form" ng-submit="submitForm(form_register.$valid)" novalidate action="/submit" method='post'>
+                    <div class="form-group">
+                      <label for="fname">First Name:</label>
+                        <input type="text" class="form-control" name="fname" id="fname" ng-model="fname" ng-maxlength="8" required>
+                        <div role="alert">
+                          <span class="error" ng-show="form_register.fname.$error.required">Required!</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="lname">Last Name:</label>
+                        <input type="text" class="form-control" name="lname" id="lname" ng-model="lname" required>
+                        <div role="alert">
+                          <span class="error" ng-show="form_register.fname.$error.required">Required!</span>
+                        </div>
+                    </div>
+                    <div class="form-group">                         
+                        <label for="email">Email address:</label>
+                        <input type="email" class="form-control" name="email" id="email" ng-model="email">
+                        <p ng-show="form_register.email.$invalid" class="help-block">Email is not valid.</p>
+                      </div>
+                      <div class="form-group">                         
+                        <label for="mobile">Mobile:</label>
+                        <input type="number" class="form-control" name="mobile" id="mobile" ng-model="mobile" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="11">
+                      </div>
+                    <div class="form-group">
+                      <label for="pwd">Password:</label>
+                      <input type="password" class="form-control" name="pwd" id="pwd" ng-model="pwd" ng-minlength="8">
+                      <p ng-show="form_register.pwd.$error.minlength" class="help-block">Password is too short.</p> 
+                    </div>
+                    <div class="form-group">
+                      <label for="pwd_reenter">Re-enter Password:</label>
+                      <input type="password" class="form-control" name="pwd_reenter" id="pwd_reenter" ng-model="pwd_reenter">
+                      
+                    </div>
+                    <button type="submit" class="btn btn-success" ng-disabled="userForm.$invalid">Register</button>
+                  </form>
+                </div>        
+              </div>
+            </div>
+          </div><!-- End of Registration page-->
+        </li>
+        <li><a href="#" data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span>Login</a>
+        <div id="login" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Login</h3>
+              </div>
+              <div class="modal-body" ng-app="login_validationApp" ng-controller="login_val_ctrl">
+                <form name="form_login" role="form" ng-submit="submitForm(form_login.$valid)" novalidate action="/login" method="post">
+                  <div class="form-group">                         
+                      <label for="email_login">Email address:</label>
+                      <input type="email" class="form-control" id="email_login" name="email_login" required>
+                      <p ng-show="form_login.email.$invalid" class="help-block">Email is not valid.</p>
+                      
+                    </div>
+                  <div class="form-group">
+                    <label for="email_pwd">Password:</label>
+                    <input type="password" class="form-control" id="email_pwd" name="email_pwd" required>
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox"> Remember me</label>
+                  </div>
+                  <button type="submit" class="btn btn-success">Login</button>
+                </form>
+              </div>        
+            </div>
+          </div>
+        </div><!-- End of Login page--></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<h2 id="show_msg">Welcome</h2>
+ <iframe src="home.html" name="iframe_a" id="iframe_a" scrolling="no" onload="resizeIframe(this)" frameborder="0px"></iframe> 
+
+<script type="text/javascript">
+//resize frame
+function resizeIframe(obj) {
+  var i_height = obj.contentWindow.document.body.scrollHeight;
+      if (i_height < screen.height){
+       i_height = screen.height;
+      }
+      obj.style.height = (i_height + 1) + 'px';
+      obj.style.width = screen.width + 'px';
+}
+
+</script>
+</body>
+</html>

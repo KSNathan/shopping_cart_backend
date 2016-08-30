@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+</style>
+<link rel="stylesheet" href="../css/bootstrap.min.css"/>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../js/ang_app.js"></script>
+<script>
+	function getUsername(){
+	$.ajax('/getname',success:function(result){
+		$('#show_msg').text(result.toString());
+	});
+	}
+</script>
+</head>
+<body onload="getUsername()">
+<div class="container">
+<h1 id="show_msg">Welcome</h1>
+</div>
+
+</body>
+</html>
